@@ -1,4 +1,3 @@
-"use client";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
@@ -51,7 +50,7 @@ export function FramerModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 top-0 left-0 right-0 bottom-0 flex flex-col items-center w-full h-screen justify-center dark:bg-black/90 bg-white/90 backdrop-blur-sm cursor-zoom-out border"
+            className="fixed inset-0 z-20 top-0 left-0 right-0 bottom-0 flex flex-col items-center w-full h-screen justify-center dark:bg-black/90 bg-white/90 backdrop-blur-sm cursor-zoom-out border"
             onClick={() => setOpen(false)}
           >
             <motion.div
@@ -59,7 +58,7 @@ export function FramerModal({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 8 }}
               onClick={(e) => e.stopPropagation()}
-              className=" w-full max-w-lg xl:max-w-7xl rounded-xl bg-white/5 p-6 backdrop-blur-2xl border"
+              className=" w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl border"
             >
               <button
                 className="absolute top-2 right-2"

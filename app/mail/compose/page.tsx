@@ -1,11 +1,10 @@
 "use client";
 
-import { Suspense, useActionState } from "react";
+import { Suspense } from "react";
 import { Paperclip, Trash2 } from "lucide-react";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+
 import {
   Tooltip,
   TooltipContent,
@@ -15,10 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 function DiscardDraftLink() {
-  let { name } = useParams();
-
   return (
-    <Link href={`/mail/${name}`} className="text-gray-400 hover:text-gray-600">
+    <Link href={`/mail/drafts`} className="text-gray-400 hover:text-gray-600">
       <Trash2 size={20} />
     </Link>
   );

@@ -1,30 +1,13 @@
 "use client";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Star,
-  StarOff,
-  Reply,
-  Forward,
-  Trash2,
-  Archive,
-  MoreHorizontal,
-} from "lucide-react";
+import { Star, StarOff, Reply, Forward, Trash2, Archive } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { EmailDetail } from "../components/email-detail";
 import { Email } from "@/types/email";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 const emails: (Email & { avatar: string; avatarColor: string })[] = [
   {
