@@ -4,29 +4,86 @@ import { FramerModal, ModalContent } from "@/components/core/modal/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Edit3, Inbox, Star, Send, Trash2, Mail } from "lucide-react";
+import {
+  Edit3,
+  Inbox,
+  Star,
+  Send,
+  Trash2,
+  Mail,
+  Archive,
+  BugOffIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import ComposePage from "../compose/page";
 
 const sidebarItems = [
-  { icon: Inbox, label: "Inbox", href: "/mail/inbox", count: 115 },
-  { icon: Star, label: "Important", href: "/mail/important" },
-  { icon: Edit3, label: "Drafts", href: "/mail/drafts", count: 11 },
-  { icon: Send, label: "Sent", href: "/mail/sent", count: 5 },
-  { icon: Trash2, label: "Trash", href: "/mail/trash", count: 4 },
-  { icon: Mail, label: "All Mail", href: "/mail/all", count: 294 },
+  {
+    icon: Inbox,
+    label: "Inbox",
+    folder: "inbox",
+    href: "/mail/inbox",
+    count: 0,
+  },
+  {
+    icon: Star,
+    label: "Important",
+    folder: "important",
+    href: "/mail/important",
+    count: 0,
+  },
+  {
+    icon: Archive,
+    label: "Archive",
+    folder: "archive",
+    href: "/mail/archive",
+    count: 0,
+  },
+  {
+    icon: Edit3,
+    label: "Drafts",
+    folder: "drafts",
+    href: "/mail/drafts",
+    count: 0,
+  },
+  { icon: Send, label: "Sent", folder: "sent", href: "/mail/sent", count: 0 },
+  {
+    icon: Trash2,
+    label: "Trash",
+    folder: "trash",
+    href: "/mail/trash",
+    count: 0,
+  },
+  {
+    icon: BugOffIcon,
+    label: "Spam",
+    folder: "spam",
+    href: "/mail/spam",
+    count: 0,
+  },
+  {
+    icon: Mail,
+    label: "All Mail",
+    folder: "all",
+    href: "/mail/all",
+    count: 0,
+  },
 ];
 
 const labels = [
   { name: "Work", color: "bg-blue-500", count: 0 },
+  { name: "Personal", color: "bg-rose-500", count: 0 },
   { name: "Studies", color: "bg-yellow-500", count: 0 },
+  { name: "Family", color: "bg-green-500", count: 0 },
+  { name: "Friends", color: "bg-pink-500", count: 0 },
 ];
 
 export default function MailSidebar() {
   const pathname = usePathname();
   const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <div className="w-64 border-r flex flex-col fixed left-0 top-14 bottom-0">
       <div className="p-4">
@@ -45,6 +102,7 @@ export default function MailSidebar() {
             {sidebarItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
+
               return (
                 <Link
                   key={item.href}
@@ -61,10 +119,14 @@ export default function MailSidebar() {
                     />
                     {item.label}
                   </div>
-                  {item.count !== undefined && (
+
+                  {item.count > 0 && item.count !== undefined && (
                     <span className="text-xs text-muted-foreground">
                       {item.count}
                     </span>
+                  )}
+                  {isActive && (
+                    <span className="w-2 h-2 rounded-full bg-blue-600" />
                   )}
                 </Link>
               );

@@ -12,7 +12,7 @@ export function WelcomeToast() {
           (document.cookie = "email-toast=1; max-age=31536000; path=/"),
         description: (
           <p>
-            This is a demo of an email client UI with a Postgres database.{" "}
+            This is a demo of an email client UI built with Next.js.
             <a
               href="https://vercel.com/templates/next.js/next-js-email-client"
               className="text-blue-600 hover:underline"
