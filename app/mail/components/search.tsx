@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function SearchComponent() {
   const [query, setQuery] = useState("");
   return (
-    <div>
+    <div className="hidden lg:flex">
       <Form action="/mail/search" className="w-full">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
