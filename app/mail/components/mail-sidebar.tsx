@@ -18,6 +18,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import ComposePage from "../compose/page";
+import {
+  mockInboxEmails,
+  mockImportantEmails,
+  mockArchiveEmails,
+  mockDraftEmails,
+  mockSentEmails,
+  mockTrashEmails,
+  mockSpamEmails,
+} from "@/lib/data/mock-emails";
 
 const sidebarItems = [
   {
@@ -25,50 +34,111 @@ const sidebarItems = [
     label: "Inbox",
     folder: "inbox",
     href: "/mail/inbox",
-    count: 0,
+    data: {
+      email: mockInboxEmails,
+      count: mockInboxEmails.length,
+      unread: mockInboxEmails.filter((email) => !email.read).length,
+    },
   },
   {
     icon: Star,
     label: "Important",
     folder: "important",
     href: "/mail/important",
-    count: 0,
+    data: {
+      email: mockImportantEmails,
+      count: mockImportantEmails.length,
+      unread: mockImportantEmails.filter((email) => !email.read).length,
+    },
   },
   {
     icon: Archive,
     label: "Archive",
     folder: "archive",
     href: "/mail/archive",
-    count: 0,
+    data: {
+      email: mockArchiveEmails,
+      count: mockArchiveEmails.length,
+      unread: mockArchiveEmails.filter((email) => !email.read).length,
+    },
   },
   {
     icon: Edit3,
     label: "Drafts",
     folder: "drafts",
     href: "/mail/drafts",
-    count: 0,
+    data: {
+      email: mockDraftEmails,
+      count: mockDraftEmails.length,
+      unread: mockDraftEmails.filter((email) => !email.read).length,
+    },
   },
-  { icon: Send, label: "Sent", folder: "sent", href: "/mail/sent", count: 0 },
+  {
+    icon: Send,
+    label: "Sent",
+    folder: "sent",
+    href: "/mail/sent",
+    data: {
+      email: mockSentEmails,
+      count: mockSentEmails.length,
+      unread: mockSentEmails.filter((email) => !email.read).length,
+    },
+  },
   {
     icon: Trash2,
     label: "Trash",
     folder: "trash",
     href: "/mail/trash",
-    count: 0,
+    data: {
+      email: mockTrashEmails,
+      count: mockTrashEmails.length,
+      unread: mockTrashEmails.filter((email) => !email.read).length,
+    },
   },
   {
     icon: BugOffIcon,
     label: "Spam",
     folder: "spam",
     href: "/mail/spam",
-    count: 0,
+    data: {
+      email: mockSpamEmails,
+      count: mockSpamEmails.length,
+      unread: mockSpamEmails.filter((email) => !email.read).length,
+    },
   },
   {
     icon: Mail,
     label: "All Mail",
     folder: "all",
     href: "/mail/all",
-    count: 0,
+    data: {
+      email: [
+        ...mockInboxEmails,
+        ...mockSentEmails,
+        ...mockDraftEmails,
+        ...mockTrashEmails,
+        ...mockSpamEmails,
+        ...mockArchiveEmails,
+        ...mockImportantEmails,
+      ],
+      count:
+        mockInboxEmails.length +
+        mockSentEmails.length +
+        mockDraftEmails.length +
+        mockTrashEmails.length +
+        mockSpamEmails.length +
+        mockArchiveEmails.length +
+        mockImportantEmails.length,
+      unread: [
+        ...mockInboxEmails,
+        ...mockSentEmails,
+        ...mockDraftEmails,
+        ...mockTrashEmails,
+        ...mockSpamEmails,
+        ...mockArchiveEmails,
+        ...mockImportantEmails,
+      ].filter((email) => !email.read).length,
+    },
   },
 ];
 
@@ -120,14 +190,18 @@ export default function MailSidebar() {
                     {item.label}
                   </div>
 
-                  {item.count > 0 && item.count !== undefined && (
-                    <span className="text-xs text-muted-foreground">
-                      {item.count}
-                    </span>
-                  )}
-                  {isActive && (
-                    <span className="w-2 h-2 rounded-full bg-blue-600" />
-                  )}
+                  {item.data &&
+                    item.data.unread > 0 &&
+                    item.data.email !== undefined &&
+                    (isActive ? (
+                      <span className="w-8 h-8 p-2 rounded-full bg-blue-600 text-xs font-bold text-neutral-200 text-center">
+                        {item.data.unread}
+                      </span>
+                    ) : (
+                      <span className="text-xs font-bold bg-zinc-500 rounded-full p-2 text-white w-8 h-8 text-center">
+                        {item.data.unread}
+                      </span>
+                    ))}
                 </Link>
               );
             })}
@@ -157,6 +231,13 @@ export default function MailSidebar() {
               ))}
             </div>
           </div>
+          <Separator className="my-4" />
+          <div className="px-3">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Folder
+            </h2>
+          </div>
+          <div className="space-y-1"></div>
         </div>
       </ScrollArea>
       <div className="p-4 border-t">

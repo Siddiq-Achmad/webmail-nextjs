@@ -14,7 +14,7 @@ export function WelcomeToast() {
           <p>
             This is a demo of an email client UI built with Next.js.
             <a
-              href="https://vercel.com/templates/next.js/next-js-email-client"
+              href="https://siddiq.luxima.id"
               className="text-blue-600 hover:underline"
               target="_blank"
             >

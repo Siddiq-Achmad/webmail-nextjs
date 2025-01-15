@@ -2,21 +2,34 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Archive, Reply, Forward, Trash2, Star, StarOff } from "lucide-react";
+import {
+  Archive,
+  Reply,
+  Forward,
+  Trash2,
+  Star,
+  StarOff,
+  Mail,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { EmailDetail } from "./email-detail";
 import { EmailList } from "./email-list";
 import { Email } from "@/types/email";
 import { cn } from "@/lib/utils";
 import { EmailService } from "@/lib/services/email-service";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface EmailPageProps {
   folder: string;
   showTabs?: boolean;
+  tabs?: string;
 }
 
-export function EmailPage({ folder, showTabs = false }: EmailPageProps) {
+export function EmailPage({
+  folder,
+  showTabs = false,
+  tabs = "all",
+}: EmailPageProps) {
   const [emails, setEmails] = useState<
     (Email & { avatar: string; avatarColor: string })[]
   >([]);
@@ -38,7 +51,7 @@ export function EmailPage({ folder, showTabs = false }: EmailPageProps) {
     };
 
     loadEmails();
-  }, [folder]);
+  }, [folder, tabs]);
 
   const toggleEmailSelection = (emailId: number) => {
     setSelectedEmails((prev) =>
@@ -95,30 +108,37 @@ export function EmailPage({ folder, showTabs = false }: EmailPageProps) {
 
   return (
     <div className="h-full flex flex-col">
-      {showTabs && (
-        <div className="flex items-center justify-between p-4">
-          <Tabs defaultValue="primary" className="w-full">
-            <TabsList>
-              <TabsTrigger value="primary" className="gap-2">
+      {showTabs ? (
+        <div className="flex items-center justify-between">
+          <Tabs defaultValue="all" className="w-full">
+            <TabsList className="m-6">
+              <TabsTrigger value="all" className="gap-2">
+                <Mail className="h-4 w-4" />
+                All Mails
+                <span className="text-xs bg-secondary rounded-full px-2">
+                  {emails.length}
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="unread" className="gap-2">
                 Unread
                 <span className="text-xs bg-secondary rounded-full px-2">
                   {emails.filter((e) => e.read === false).length}
                 </span>
               </TabsTrigger>
-              <TabsTrigger value="secondary" className="gap-2">
+              <TabsTrigger value="read" className="gap-2">
                 Read
                 <span className="text-xs bg-secondary rounded-full px-2">
                   {emails.filter((e) => e.read === true).length}
                 </span>
               </TabsTrigger>
-              <TabsTrigger value="stared" className="gap-2">
+              <TabsTrigger value="starred" className="gap-2">
                 <Star className="h-4 w-4 text-yellow-500" />
                 Stared
                 <span className="text-xs bg-secondary rounded-full px-2">
                   {emails.filter((e) => e.starred === true).length}
                 </span>
               </TabsTrigger>
-              <TabsTrigger value="unstar" className="gap-2">
+              <TabsTrigger value="unstarred" className="gap-2">
                 <StarOff className="h-4 w-4" />
                 Unstared
                 <span className="text-xs bg-secondary rounded-full px-2">
@@ -126,7 +146,162 @@ export function EmailPage({ folder, showTabs = false }: EmailPageProps) {
                 </span>
               </TabsTrigger>
             </TabsList>
+            <TabsContent value="all">
+              <div className="flex items-center justify-between">
+                <div
+                  className={cn(
+                    "flex-1 overflow-auto transition-all duration-200",
+                    selectedEmail ? "mr-[calc(100vw-16rem)]" : ""
+                  )}
+                >
+                  <EmailList
+                    emails={emails}
+                    selectedEmails={selectedEmails}
+                    onEmailSelect={toggleEmailSelection}
+                    onEmailClick={handleEmailClick}
+                    onToggleStar={handleToggleStar}
+                  />
+                </div>
+
+                <EmailDetail
+                  email={selectedEmail}
+                  onClose={() => setSelectedEmail(null)}
+                  onReply={(email) => console.log("Reply to:", email)}
+                  onForward={(email) => console.log("Forward:", email)}
+                  onDelete={handleDelete}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="unread">
+              <div className="flex items-center justify-between">
+                <div
+                  className={cn(
+                    "flex-1 overflow-auto transition-all duration-200",
+                    selectedEmail ? "mr-[calc(100vw-16rem)]" : ""
+                  )}
+                >
+                  <EmailList
+                    emails={emails.filter((e) => e.read === false)}
+                    selectedEmails={selectedEmails}
+                    onEmailSelect={toggleEmailSelection}
+                    onEmailClick={handleEmailClick}
+                    onToggleStar={handleToggleStar}
+                  />
+                </div>
+
+                <EmailDetail
+                  email={selectedEmail}
+                  onClose={() => setSelectedEmail(null)}
+                  onReply={(email) => console.log("Reply to:", email)}
+                  onForward={(email) => console.log("Forward:", email)}
+                  onDelete={handleDelete}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="read">
+              <div className="flex items-center justify-between">
+                <div
+                  className={cn(
+                    "flex-1 overflow-auto transition-all duration-200",
+                    selectedEmail ? "mr-[calc(100vw-16rem)]" : ""
+                  )}
+                >
+                  <EmailList
+                    emails={emails.filter((e) => e.read === true)}
+                    selectedEmails={selectedEmails}
+                    onEmailSelect={toggleEmailSelection}
+                    onEmailClick={handleEmailClick}
+                    onToggleStar={handleToggleStar}
+                  />
+                </div>
+
+                <EmailDetail
+                  email={selectedEmail}
+                  onClose={() => setSelectedEmail(null)}
+                  onReply={(email) => console.log("Reply to:", email)}
+                  onForward={(email) => console.log("Forward:", email)}
+                  onDelete={handleDelete}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="starred">
+              <div className="flex items-center justify-between">
+                <div
+                  className={cn(
+                    "flex-1 overflow-auto transition-all duration-200",
+                    selectedEmail ? "mr-[calc(100vw-16rem)]" : ""
+                  )}
+                >
+                  <EmailList
+                    emails={emails.filter((e) => e.starred === true)}
+                    selectedEmails={selectedEmails}
+                    onEmailSelect={toggleEmailSelection}
+                    onEmailClick={handleEmailClick}
+                    onToggleStar={handleToggleStar}
+                  />
+                </div>
+
+                <EmailDetail
+                  email={selectedEmail}
+                  onClose={() => setSelectedEmail(null)}
+                  onReply={(email) => console.log("Reply to:", email)}
+                  onForward={(email) => console.log("Forward:", email)}
+                  onDelete={handleDelete}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="unstarred">
+              <div className="flex items-center justify-between">
+                <div
+                  className={cn(
+                    "flex-1 overflow-auto transition-all duration-200",
+                    selectedEmail ? "mr-[calc(100vw-16rem)]" : ""
+                  )}
+                >
+                  <EmailList
+                    emails={emails.filter((e) => e.starred === false)}
+                    selectedEmails={selectedEmails}
+                    onEmailSelect={toggleEmailSelection}
+                    onEmailClick={handleEmailClick}
+                    onToggleStar={handleToggleStar}
+                  />
+                </div>
+
+                <EmailDetail
+                  email={selectedEmail}
+                  onClose={() => setSelectedEmail(null)}
+                  onReply={(email) => console.log("Reply to:", email)}
+                  onForward={(email) => console.log("Forward:", email)}
+                  onDelete={handleDelete}
+                />
+              </div>
+            </TabsContent>
           </Tabs>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between">
+          <div
+            className={cn(
+              "flex-1 overflow-auto transition-all duration-200",
+              selectedEmail ? "mr-[calc(100vw-16rem)]" : ""
+            )}
+          >
+            <EmailList
+              emails={emails}
+              selectedEmails={selectedEmails}
+              onEmailSelect={toggleEmailSelection}
+              onEmailClick={handleEmailClick}
+              onToggleStar={handleToggleStar}
+            />
+          </div>
+
+          <EmailDetail
+            email={selectedEmail}
+            onClose={() => setSelectedEmail(null)}
+            onReply={(email) => console.log("Reply to:", email)}
+            onForward={(email) => console.log("Forward:", email)}
+            onDelete={handleDelete}
+          />
         </div>
       )}
       {selectedEmails.length > 0 && (
@@ -151,28 +326,6 @@ export function EmailPage({ folder, showTabs = false }: EmailPageProps) {
           </Button>
         </div>
       )}
-      <div
-        className={cn(
-          "flex-1 overflow-auto transition-all duration-200",
-          selectedEmail ? "mr-[calc(100vw-16rem)]" : ""
-        )}
-      >
-        <EmailList
-          emails={emails}
-          selectedEmails={selectedEmails}
-          onEmailSelect={toggleEmailSelection}
-          onEmailClick={handleEmailClick}
-          onToggleStar={handleToggleStar}
-        />
-      </div>
-
-      <EmailDetail
-        email={selectedEmail}
-        onClose={() => setSelectedEmail(null)}
-        onReply={(email) => console.log("Reply to:", email)}
-        onForward={(email) => console.log("Forward:", email)}
-        onDelete={handleDelete}
-      />
     </div>
   );
 }

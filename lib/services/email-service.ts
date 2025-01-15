@@ -12,7 +12,7 @@ import {
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Map folder names to their respective email arrays
-const folderMap = {
+export const folderMap = {
   inbox: mockInboxEmails,
   important: mockImportantEmails,
   archive: mockArchiveEmails,

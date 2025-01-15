@@ -92,7 +92,7 @@ View the changes on GitHub.`,
   },
   {
     id: 4,
-    from: "Alice Johnson",
+    from: "Alice.Johnson@gmail.com",
     subject: "Team Collaboration Meeting Tomorrow!",
     preview:
       "Hi team, I hope this email finds you well. Our next collaboration meeting...",
@@ -114,7 +114,7 @@ Alice`,
   },
   {
     id: 5,
-    from: "Bob Smith",
+    from: "Bob.Smith@mail.com",
     subject: "Project Deadline Reminder",
     preview: "Just a friendly reminder about the upcoming deadline...",
     content: `Hello everyone,
@@ -139,7 +139,7 @@ Bob`,
   },
   {
     id: 6,
-    from: "Carol White",
+    from: "Carol.White@abc.com",
     subject: "New Feature Implementation",
     preview: "Here's the documentation for the new feature we discussed...",
     content: `Hi team,
@@ -158,7 +158,7 @@ Carol`,
   },
   {
     id: 7,
-    from: "Eve Green",
+    from: "Eve.Green@example.com",
     subject: "Weekly Team Update",
     preview: "Here's a summary of what we accomplished this week...",
     content: `Hi team,
@@ -181,7 +181,7 @@ Eve`,
   },
   {
     id: 8,
-    from: "Frank Brown",
+    from: "Frank.Brown@mail.com",
     subject: "Project Status Update",
     preview: "Please find attached the latest project status report...",
     content: `Hi team,
@@ -198,7 +198,7 @@ Frank`,
   },
   {
     id: 9,
-    from: "Alice Johnson",
+    from: "Alice.Johnson@gmail.com",
     subject: "Team Collaboration Meeting Tomorrow!",
     preview:
       "Hi team, I hope this email finds you well. Our next collaboration meeting...",
@@ -285,7 +285,7 @@ export const mockSentEmails = [
 
 export const mockDraftEmails = [
   {
-    id: 201,
+    id: 601,
     to: "partner@business.com",
     subject: "Partnership Opportunity (Draft)",
     preview: "I hope this email finds you well. I wanted to discuss...",
